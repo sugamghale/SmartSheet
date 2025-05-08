@@ -309,7 +309,7 @@ footer i {
     gap: 25px;
 }
 
-.footer-social a{
+.footer-social a {
     color: white;
 }
 
@@ -385,4 +385,60 @@ footer i {
 
 .social-icons a:hover {
     color: #2a0d64;
+}
+
+/* Responsive Design for Mobile Screen Sizes */
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    .nav-bar {
+        padding: 15px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .navbar-buttons {
+        display: none;
+    }
+
+    .logo h1 {
+        font-size: 25px;
+    }
+
+    .hero {
+        padding: 15px;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-text h1 {
+        font-size: 30px;
+    }
+
+    .features {
+        padding: 15px;
+    }
+
+    .feature-row {
+        width: 350px;
+    }
+
+    footer {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .footer-copyright {
+        text-align: left;
+        margin-top: 10px;
+    }
+
 }

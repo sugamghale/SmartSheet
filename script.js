@@ -97,14 +97,20 @@ function calculateG1to3GPA() {
 
     // Calculate each subject
     subjects.forEach(subject => {
-        const la = parseFloat(subject.querySelector('.las').value);
-        const marks = parseFloat(subject.querySelector('.marks').value);
-        const credit = parseFloat(subject.querySelector('.las').dataset.credit);
+        const laInput = subject.querySelector('input[data-subject]');
+        const marksInput = subject.querySelector('input[type="number"]:not([data-subject])');
+
+        if (!laInput || !marksInput) return; // Skip if inputs not found
+
+        const la = parseFloat(laInput.value);
+        const marks = parseFloat(marksInput.value);
+        const credit = parseFloat(laInput.dataset.credit);
         const resultDiv = subject.querySelector('.result-row');
 
-        // Skip if empty values
-        // if (isNaN(la) return;
+        // Skip if values are invalid
+        if (isNaN(la)) return;
         if (isNaN(marks)) return;
+        if (isNaN(credit)) return;
 
         // Calculate percentage
         const maxMarks = la * 4;
@@ -430,3 +436,235 @@ function downloadPDF1to3() {
     doc.save('progress-report.pdf');
 }
 
+
+
+// Grade 4-8 Functions
+function submitStudentDetails4to8() {
+    var name = document.getElementById('studentName4to8').value.trim();
+    var roll = document.getElementById('rollNumber4to8').value.trim();
+    var grade = document.getElementById('gradeLevel4to8').value;
+    var teacher = document.getElementById('classTeacher4to8').value.trim();
+    var dob = document.getElementById('dob4to8').value;
+
+    if (!name || !roll || !grade || !teacher || !dob) {
+        alert("Please complete all student details.");
+        return;
+    }
+
+    // Save student data
+    var studentData = {
+        name: name,
+        roll: roll,
+        grade: grade,
+        teacher: teacher,
+        dob: dob
+    };
+    localStorage.setItem('currentStudent4to8', JSON.stringify(studentData));
+
+    // Show marks form
+    document.getElementById("studentDetailSection4to8").style.display = "none";
+    document.getElementById("g4to8Form").style.display = "block";
+}
+
+function calculateGP(marks, maxMarks) {
+    var percent = (marks / maxMarks) * 100;
+
+    if (percent >= 90) return 4.0;
+    if (percent >= 80) return 3.6;
+    if (percent >= 70) return 3.2;
+    if (percent >= 60) return 2.8;
+    if (percent >= 50) return 2.4;
+    if (percent >= 40) return 2.0;
+    if (percent >= 35) return 1.6;
+    return 0.8;
+}
+
+function calculateGrade4to8() {
+    var subjects = [
+        { id: "nepali", name: "Nepali", credit: 2.5 },
+        { id: "english", name: "English", credit: 2.5 },
+        { id: "math", name: "Mathematics", credit: 2.5 },
+        { id: "science", name: "Science and Technology", credit: 2.5 },
+        { id: "social", name: "Social Studies and Human Value Education", credit: 2.5 },
+        { id: "health", name: "Health, Physical and Creative Arts", credit: 1.5 },
+        { id: "local", name: "Local Subject", credit: 2 }
+    ];
+
+    var totalWGP = 0;
+    var totalCredit = 0;
+    var results = [];
+
+    for (var i = 0; i < subjects.length; i++) {
+        var subject = subjects[i];
+        var block = document.querySelector('.subject-block[data-subject="' + subject.id + '"]');
+        var thMarks = parseFloat(block.querySelector('.marks-th').value);
+        var inMarks = parseFloat(block.querySelector('.marks-in').value);
+        var resultDiv = block.querySelector('.result-row');
+
+        if (!block) {
+            console.error('Subject block not found for:', subject.id);
+            continue;
+        }
+
+        // Calculate GP and WGP
+        var thGP = calculateGP(thMarks, 50);
+        var inGP = calculateGP(inMarks, 50);
+        var thWGP = subject.credit * thGP;
+        var inWGP = subject.credit * inGP;
+        var finalGP = (thGP + inGP) / 2;
+        var finalGrade = getGradeFromGP(finalGP);
+
+        // Store results
+        results.push({
+            id: subject.id,
+            name: subject.name,
+            credit: subject.credit,
+            thMarks: thMarks,
+            inMarks: inMarks,
+            thGP: thGP,
+            inGP: inGP,
+            thWGP: thWGP,
+            inWGP: inWGP,
+            finalGrade: finalGrade
+        });
+
+        // Update totals
+        totalWGP += thWGP + inWGP;
+        totalCredit += subject.credit;
+
+        // Display results
+        resultDiv.innerHTML = 'Theoretical: ' + thMarks + '/50 (GP: ' + thGP.toFixed(1) + ', WGP: ' + thWGP.toFixed(1) + ') | ' +
+            'Internal: ' + inMarks + '/50 (GP: ' + inGP.toFixed(1) + ', WGP: ' + inWGP.toFixed(1) + ') | ' +
+            'Final Grade: ' + finalGrade;
+    }
+
+    // Calculate GPA
+    var gpa = totalWGP / (totalCredit * 2);
+    document.getElementById('finalGPA4to8').textContent = gpa.toFixed(2);
+    document.getElementById('finalGPAResult4to8').style.display = 'block';
+
+    return {
+        gpa: gpa,
+        results: results
+    };
+}
+
+function generateGrade4to8Sheet() {
+    var form = document.getElementById('g4to8Form');
+    if (!form || window.getComputedStyle(form).display === 'none') {
+        alert('Please complete student details first!');
+        return;
+    }
+    var calculation = calculateGrade4to8();
+    var gpa = calculation.gpa;
+    var results = calculation.results;
+    var student = JSON.parse(localStorage.getItem('currentStudent4to8')) || {};
+    var school = JSON.parse(localStorage.getItem('schoolDetails')) || {};
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // School header
+    doc.setFontSize(18);
+    doc.text(school.name || "Your School Name", 105, 20, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text(school.address || "School Address", 105, 28, { align: 'center' });
+    doc.text('Academic Year: ' + (school.academicYear || "----"), 105, 34, { align: 'center' });
+    doc.setFontSize(16);
+    doc.text("GRADE 4-8 PROGRESS REPORT", 105, 44, { align: 'center' });
+
+    // Student info
+    doc.setFontSize(12);
+    doc.text('Name: ' + (student.name || "N/A"), 20, 60);
+    doc.text('Roll No: ' + (student.roll || "N/A"), 120, 60);
+    doc.text('Grade: ' + (student.grade || "N/A"), 20, 68);
+    doc.text('Date of Birth: ' + (student.dob || "N/A"), 120, 68);
+    doc.text('Teacher: ' + (student.teacher || "N/A"), 20, 76);
+
+    // Table data
+    var headers = [
+        ["Subject", "Credit", "Theoretical", "Internal", "Final", "WGP (Th)", "WGP (In)"]
+    ];
+
+    var data = [];
+    for (var i = 0; i < results.length; i++) {
+        var subject = results[i];
+        data.push([
+            subject.name,
+            subject.credit,
+            subject.thMarks + '/50 (' + subject.thGP.toFixed(1) + ')',
+            subject.inMarks + '/50 (' + subject.inGP.toFixed(1) + ')',
+            subject.finalGrade,
+            subject.thWGP.toFixed(1),
+            subject.inWGP.toFixed(1)
+        ]);
+    }
+
+    // Add table
+    doc.autoTable({
+        startY: 85,
+        head: headers,
+        body: data,
+        theme: 'grid',
+        tableWidth: 'auto',
+        styles: {
+            fontSize: 10,
+            cellPadding: 2
+        }
+    });
+
+    // Final GPA
+    doc.text('Final GPA: ' + gpa.toFixed(2), 160, doc.lastAutoTable.finalY + 15);
+
+    // Signatures
+    var today = new Date().toLocaleDateString('en-NP');
+    doc.text('Checked By: ' + (student.teacher || "N/A"), 20, doc.lastAutoTable.finalY + 30);
+    doc.text('Date: ' + today, 20, doc.lastAutoTable.finalY + 38);
+    doc.text("Head Teacher: ....................", 120, doc.lastAutoTable.finalY + 30);
+
+    // Footer note
+    doc.setFontSize(10);
+    doc.text("Note: Both theoretical and internal assessments carry the same credit hours",
+        105, doc.lastAutoTable.finalY + 45, { align: 'center' });
+
+    doc.save('grade-4-8-report-' + (student.name || "student") + '.pdf');
+}
+
+function saveFinalReport4to8() {
+    var calculation = calculateGrade4to8();
+    var name = document.getElementById('studentName4to8').value.trim() || 'Unnamed Student';
+    var roll = document.getElementById('rollNumber4to8').value.trim() || 'N/A';
+    var grade = document.getElementById('gradeLevel4to8').value || '4';
+    var teacher = document.getElementById('classTeacher4to8').value.trim() || 'N/A';
+
+    // Create report object
+    var report = {
+        name: name,
+        roll: roll,
+        grade: grade,
+        teacher: teacher,
+        finalGPA: calculation.gpa.toFixed(2),
+        subjects: calculation.results,
+        savedAt: new Date().toLocaleString()
+    };
+
+    // Save to localStorage
+    var allReports = JSON.parse(localStorage.getItem('studentReports4to8') || '[]');
+    allReports.push(report);
+    localStorage.setItem('studentReports4to8', JSON.stringify(allReports));
+
+    alert('Report saved successfully!');
+    return report;
+}
+
+// Helper functions (same for both grade categories)
+
+function getGradeFromGP(gp) {
+    if (gp >= 3.6) return "A+";
+    if (gp >= 3.2) return "A";
+    if (gp >= 2.8) return "B+";
+    if (gp >= 2.4) return "B";
+    if (gp >= 2.0) return "C+";
+    if (gp >= 1.6) return "C";
+    if (gp >= 0.8) return "D";
+    return "NG";
+}

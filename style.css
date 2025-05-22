@@ -623,6 +623,22 @@ footer i {
     flex-direction: column;
     gap: 15px;
     width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    /* Center the section */
+    text-align: left;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    border: 1px solid #ccc;
+    /* Optional: can be removed if shadow is sufficient */
+}
+
+#studentDetailSection input,
+#studentDetailSection select {
+    width: 100%;
     padding: 10px 12px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -630,8 +646,23 @@ footer i {
     font-size: 15px;
 }
 
-#studentDetailSection input,
-#studentDetailSection select {
+#studentDetailSection4to8 {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    border: 1px solid #ccc;
+}
+
+#studentDetailSection4to8 input {
     width: 100%;
     padding: 10px 12px;
     margin-bottom: 20px;

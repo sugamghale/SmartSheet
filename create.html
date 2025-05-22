@@ -55,7 +55,7 @@
 
         <!-- Grade 1–3 Input Section -->
         <section class="form-section" id="grade1to3Section" style="display: none;">
-            <h2>Grade 1–3 Subject Evaluation</h2>
+            <h2>Student Detail</h2>
             <div id="studentDetailSection">
                 <label>Student Name:</label>
                 <input type="text" id="studentName" placeholder="Enter student name" required>
@@ -143,11 +143,351 @@
                     <h3>Final GPA: <span id="finalGPA"></span></h3>
                 </div>
             </form>
+            <button type="button" class="button-primary" id="downloadPDFBtn" onclick="downloadPDF1to3()"
+                style="display: none;">Download PDF</button>
         </section>
-        <button id="downloadPDFBtn" onclick="downloadPDF1to3()" class="button-primary"
-            style="margin-top: 20px; display: none;">
-            Download PDF
-        </button>
+
+
+
+        <!-- Grade 4–8 Input Section -->
+        <section class="form-section" id="grade4to8Section" style="display: none;">
+            <h2>Grade 4–8 Subject Evaluation</h2>
+            <div id="studentDetailSection4to8" class="student-details-form">
+                <div class="form-group">
+                    <label for="studentName4to8">Student Name:</label>
+                    <input type="text" id="studentName4to8" placeholder="Enter student name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rollNumber4to8">Roll Number:</label>
+                    <input type="text" id="rollNumber4to8" placeholder="Enter roll number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob4to8">Date of Birth:</label>
+                    <input type="date" id="dob4to8" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gradeLevel4to8">Grade:</label>
+                    <select id="gradeLevel4to8" required>
+                        <option value="" disabled selected>--Select Grade--</option>
+                        <option value="4">Grade 4</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="classTeacher4to8">Class Teacher:</label>
+                    <input type="text" id="classTeacher4to8" placeholder="Enter teacher name" required>
+                </div>
+
+                <button type="button" class="button button-primary" onclick="submitStudentDetails4to8()">Continue
+                    →</button>
+            </div>
+
+            <form id="g4to8Form" class="subject-evaluation-form" style="display: none;">
+                <h3>Enter Subject-wise Assessment (Theoretical + Internal)</h3>
+
+                <!-- Nepali -->
+                <div class="subject-block" data-subject="nepali">
+                    <h4>Nepali (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- English -->
+                <div class="subject-block" data-subject="english">
+                    <h4>English (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="subject-block" data-subject="math">
+                    <h4>Mathematics (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Science and Technology -->
+                <div class="subject-block" data-subject="science">
+                    <h4>Science and Technology (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Social Studies and Human Value Education -->
+                <div class="subject-block" data-subject="social">
+                    <h4>Social Studies and Human Value Education (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Health, Physical and Creative Arts -->
+                <div class="subject-block" data-subject="health">
+                    <h4>Health, Physical and Creative Arts (Credit Hour: 1.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Local Subject -->
+                <div class="subject-block" data-subject="local">
+                    <h4>Local Subject (Credit Hour: 2)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (50 max):</label>
+                            <input type="number" class="marks-th" max="50" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (50 max):</label>
+                            <input type="number" class="marks-in" max="50" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" class="button button-primary" onclick="generateGrade4to8Sheet()">Generate
+                        Grade
+                        Sheet</button>
+                    <button type="button" class="button button-secondary" onclick="saveFinalReport4to8()">Save
+                        Result</button>
+                </div>
+
+                <div id="finalGPAResult4to8" class="gpa-result">
+                    <h3>Final GPA: <span id="finalGPA4to8"></span></h3>
+                </div>
+            </form>
+        </section>
+
+        <!-- Grade 9-10 -->
+        <section class="form-section" id="grade9to10Section" style="display: none;">
+            <h2>Grade 9-10 Subject Evaluation</h2>
+            <div id="studentDetailSection9to10" class="student-details-form">
+                <div class="form-group">
+                    <label for="studentName9to10">Student Name:</label>
+                    <input type="text" id="studentName4to8" placeholder="Enter student name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rollNumber9to10">Roll Number:</label>
+                    <input type="text" id="rollNumber4to8" placeholder="Enter roll number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob4to8">Date of Birth:</label>
+                    <input type="date" id="dob9to10" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gradeLevel9to10">Grade:</label>
+                    <select id="gradeLevel9to10" required>
+                        <option value="" disabled selected>--Select Grade--</option>
+                        <option value="4">Grade 4</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="classTeacher9to10">Class Teacher:</label>
+                    <input type="text" id="classTeacher9to10" placeholder="Enter teacher name" required>
+                </div>
+
+                <button type="button" class="button button-primary" onclick="submitStudentDetails4to8()">Continue
+                    →</button>
+            </div>
+
+            <form id="g9to10Form" class="subject-evaluation-form" style="display: none;">
+                <h3>Enter Subject-wise Assessment (Theoretical + Internal)</h3>
+
+                <!-- Nepali -->
+                <div class="subject-block" data-subject="nepali">
+                    <h4>Nepali (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- English -->
+                <div class="subject-block" data-subject="english">
+                    <h4>English (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="subject-block" data-subject="math">
+                    <h4>Mathematics (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Science and Technology -->
+                <div class="subject-block" data-subject="science">
+                    <h4>Science and Technology (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Social Studies and Human Value Education -->
+                <div class="subject-block" data-subject="social">
+                    <h4>Social Studies and Human Value Education (Credit Hour: 2.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Health, Physical and Creative Arts -->
+                <div class="subject-block" data-subject="health">
+                    <h4>Health, Physical and Creative Arts (Credit Hour: 1.5)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <!-- Local Subject -->
+                <div class="subject-block" data-subject="local">
+                    <h4>Optional Subject (Credit Hour: 2)</h4>
+                    <div class="marks-grid">
+                        <div class="form-group">
+                            <label>Theoretical Marks (75 max):</label>
+                            <input type="number" class="marks-th" max="75" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Internal Marks (25 max):</label>
+                            <input type="number" class="marks-in" max="25" min="0" required>
+                        </div>
+                    </div>
+                    <div class="result-row"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" class="button button-primary" onclick="generateGrade4to8Sheet()">Generate
+                        Grade
+                        Sheet</button>
+                    <button type="button" class="button button-secondary" onclick="saveFinalReport4to8()">Save
+                        Result</button>
+                </div>
+
+                <div id="finalGPAResult4to8" class="gpa-result">
+                    <h3>Final GPA: <span id="finalGPA4to8"></span></h3>
+                </div>
+            </form>
+        </section>
+
+
 
     </main>
 
